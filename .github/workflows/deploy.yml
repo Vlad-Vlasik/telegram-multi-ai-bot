@@ -1,0 +1,23 @@
+name: Deploy to Railway
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Deploy to Railway
+        uses: railwayapp/deploy-action@v1
+        with:
+          railway-token: ${{ secrets.RAILWAY_TOKEN }}
+          service: telegram-multi-ai-bot
+          environment-variables: |
+            TELEGRAM_TOKEN=${{ secrets.TELEGRAM_TOKEN }}
+            XAI_API_KEY=${{ secrets.XAI_API_KEY }}
+            OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}
+            GEMINI_API_KEY=${{ secrets.GEMINI_API_KEY }}
+            PERPLEXITY_API_KEY=${{ secrets.PERPLEXITY_API_KEY }}
