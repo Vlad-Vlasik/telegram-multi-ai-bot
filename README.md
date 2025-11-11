@@ -1,11 +1,13 @@
-# Telegram Multi AI Bot
-Бот для запитів до кількох AI (Grok, ChatGPT тощо) з меню.
+# Telegram Multi AI Bot (ChatGPT + Gemini)
+
+## Функції
+- Обери AI: ChatGPT або Gemini
+- Кнопки: Копіювати, Інший AI, Меню
+- Без помилок `proxies`
 
 ## Запуск
-1. `pip install -r requirements.txt`
-2. Заповни .env ключами API
-3. `python bot.py`
-
-## API ключі
-- Grok: console.x.ai
-- OpenAI: platform.openai.com
+```bash
+pip install -r requirements.txt
+cp .env.example .env
+# відредагуй .env
+python bot.py
