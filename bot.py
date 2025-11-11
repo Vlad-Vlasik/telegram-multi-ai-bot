@@ -1,30 +1,34 @@
 import asyncio
-import logging
-from aiogram import Bot, Dispatcher, F
-from aiogram.types import CallbackQuery
-from aiogram.filters import CommandStart
-from config import TELEGRAM_TOKEN
-from clients import init_clients
-from handlers import start, handle, select_ai, back, redirect, copy
+from aiogram import Bot, Dispatcher
+from aiogram.enums import ParseMode
 from aiogram.fsm.storage.memory import MemoryStorage
+from aiogram.types import BotCommand
+from dotenv import load_dotenv
+import os
 
-logging.basicConfig(level=logging.INFO)
+from handlers import router
 
+load_dotenv()
+
+BOT_TOKEN = os.getenv("TELEGRAM_TOKEN")
+
+bot = Bot(token=BOT_TOKEN, parse_mode=ParseMode.HTML)
 dp = Dispatcher(storage=MemoryStorage())
+dp.include_router(router)
 
-# Реєстрація хендлерів
-dp.message.register(start, CommandStart())
-dp.message.register(handle, F.text)
-dp.callback_query.register(select_ai, F.data.startswith("ai_"))
-dp.callback_query.register(back, F.data == "back_main")
-dp.callback_query.register(redirect, F.data == "redirect_main")
-dp.callback_query.register(copy, F.data == "copy_response")
+
+async def set_commands():
+    commands = [
+        BotCommand(command="start", description="Почати роботу"),
+        BotCommand(command="help", description="Отримати допомогу"),
+    ]
+    await bot.set_my_commands(commands)
+
 
 async def main():
-    init_clients()
-    logging.info("Бот запущено!")
-    bot = Bot(token=TELEGRAM_TOKEN)
+    await set_commands()
     await dp.start_polling(bot)
+
 
 if __name__ == "__main__":
     asyncio.run(main())
