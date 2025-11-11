@@ -1,26 +1,16 @@
 import asyncio
 import logging
-from aiogram import Bot
-from aiogram import Dispatcher
-from aiogram.filters import CommandStart
+from aiogram import Bot, Dispatcher, F
 from aiogram.types import CallbackQuery
-from aiogram import F
+from aiogram.filters import CommandStart
 from config import TELEGRAM_TOKEN
 from clients import init_clients
-from handlers import (
-    start,
-    handle,
-    select_ai,
-    back,
-    redirect,
-    copy
-)
+from handlers import start, handle, select_ai, back, redirect, copy
+from aiogram.fsm.storage.memory import MemoryStorage
 
-# Налаштування логування
 logging.basicConfig(level=logging.INFO)
 
-# Диспетчер
-dp = Dispatcher()
+dp = Dispatcher(storage=MemoryStorage())
 
 # Реєстрація хендлерів
 dp.message.register(start, CommandStart())
