@@ -62,5 +62,5 @@ async def redirect(cb: types.CallbackQuery):
 
 async def copy(cb: types.CallbackQuery):
     text = cb.message.text or ""
-    await cb.message.answer(f"```markdown\n{text}\n```", parse_mode="Markdown")
+    await cb.message.answer(f"```markdown:disable-run
     await cb.answer("Скопійовано!")
