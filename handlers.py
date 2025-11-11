@@ -1,6 +1,4 @@
 from aiogram import types
-from aiogram.filters import CommandStart
-from aiogram.fsm.context import FSMContext
 from aiogram import F
 from keyboards import get_main_keyboard, get_response_keyboard
 from clients import client_openai, gemini_model
@@ -23,16 +21,13 @@ async def query_ai(ai_type: str, query: str) -> str:
 
         else:
             return "AI недоступний (ключ відсутній або помилка)."
-
     except Exception as e:
         return f"Помилка: {str(e)}"
 
-@CommandStart()
 async def start(message: types.Message, state: FSMContext):
     await message.answer("Обери AI:", reply_markup=get_main_keyboard())
     await state.clear()
 
-@F.text
 async def handle(message: types.Message, state: FSMContext):
     data = await state.get_data()
     current_ai = data.get("current_ai")
@@ -54,7 +49,7 @@ async def select_ai(cb: types.CallbackQuery, state: FSMContext):
     ai = cb.data.split("_")[1]
     await state.update_data(current_ai=ai)
     ai_name = "ChatGPT" if ai == "chatgpt" else "Gemini"
-    await cb.message.edit_text(f"**{ai_name}** вибрано!\n\nНапиши запит:", parse_mode="Markdown")
+    await cb.message.edit_text(f"**{ai_name}** вибрано!\nНапиши запит:", parse_mode="Markdown")
     await cb.answer()
 
 async def back(cb: types.CallbackQuery):
